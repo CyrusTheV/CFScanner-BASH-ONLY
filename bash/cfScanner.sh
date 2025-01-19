@@ -567,7 +567,7 @@ function fncMainCFFindSubnet {
 	fi
 	
 	parallelVersion=$(parallel --version | head -n1 | grep -Ewo '[0-9]{8}')
-	defaultSubnetsFileUrl="https://raw.githubusercontent.com/MortezaBashsiz/CFScanner/main/config/cf.local.iplist"
+	defaultSubnetsFileUrl="https://raw.githubusercontent.com/CyrusTheV/CFScanner-BASH-ONLY/main/config/cf.local.iplist"
 
 	if [[ "$subnetsFile" == "NULL" ]]	
 	then
