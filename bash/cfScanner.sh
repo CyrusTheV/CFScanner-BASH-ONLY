@@ -228,7 +228,8 @@ function fncCheckIPList {
 					fi
 					if [[ "$domainFronting" == "0000000000" ]]
 					then
-						mainDomain=$(echo "$configHost" | awk -F '.' '{ print $2"."$3}')
+            mainDomain="$configHost"				
+            #mainDomain=$(echo "$configHost" | awk -F '.' '{ print $2"."$3}')
 						if [[ "$osVersion" == "Linux" ]]
 								then
 									randomUUID=$(cat /proc/sys/kernel/random/uuid)
@@ -239,8 +240,9 @@ function fncCheckIPList {
 									echo "OS not supported only Linux or Mac"
 									exit 1
 						fi
-						configServerName="$randomUUID.$mainDomain"
-						ipConfigFile="$tempConfigDir/config.json.$ip"
+            configServerName="$mainDomain"						
+            #configServerName="$randomUUID.$mainDomain"
+						ipConfigFile="$tempConfigDir/config.json.$ip.json"
 						cp "$scriptDir"/config.json.temp "$ipConfigFile"
 						ipO1=$(echo "$ip" | awk -F '.' '{print $1}')
 						ipO2=$(echo "$ip" | awk -F '.' '{print $2}')
@@ -267,7 +269,7 @@ function fncCheckIPList {
 							sed -i "s/RANDOMHOST/$configServerName/g" "$ipConfigFile"
 						fi
 						# shellcheck disable=SC2009
-						pid=$(ps aux | grep config.json."$ip" | grep -v grep | awk '{ print $2 }')
+						pid=$(ps aux | grep config.json."$ip".json | grep -v grep | awk '{ print $2 }')
 						if [[ "$pid" ]]
 						then
 							kill -9 "$pid" > /dev/null 2>&1
@@ -278,7 +280,7 @@ function fncCheckIPList {
 						upAvgStr=""
 						downSuccessedCount=0
 						upSuccessedCount=0
-						nohup "$binDir"/"$v2rayCommand" -c "$ipConfigFile" > /dev/null &
+						nohup "$binDir"/"$v2rayCommand" run -c "$ipConfigFile" > /dev/null &
 						sleep 2
 						for i in $(seq 1 "$tryCount");
 						do
@@ -328,7 +330,7 @@ function fncCheckIPList {
 							upRealTime=0
 						fi
 						# shellcheck disable=SC2009
-						pid=$(ps aux | grep config.json."$ip" | grep -v grep | awk '{ print $2 }')
+						pid=$(ps aux | grep config.json."$ip".json | grep -v grep | awk '{ print $2 }')
 						if [[ "$pid" ]]
 						then
 							kill -9 "$pid" > /dev/null 2>&1
